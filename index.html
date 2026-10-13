@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0E7">
+  <title>Mapa semantyczna — embeddingi działają w Twojej przeglądarce</title>
+  <meta name="description" content="Wpisz zdania po polsku, a model embeddingowy (multilingual-e5) uruchomiony w 100% w Twojej przeglądarce pokaże je na mapie 2D — klastry tematyczne, wyszukiwanie po podobieństwie. Zero serwera.">
+  <link rel="canonical" href="https://sigpath.github.io/mapa-semantyczna/">
+  <meta property="og:title" content="Mapa semantyczna — LLM w przeglądarce">
+  <meta property="og:description" content="Embeddingi i mapa 2D zdań PL, w 100% client-side.">
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="brand">MAPA SEMANTYCZNA</p>
+      <p class="tagline">Model embeddingowy (multilingual-e5-small) liczy <strong>w 100% w Twojej przeglądarce</strong> — zero serwera, zero kluczy, zero wysyłanych danych.</p>
+    </div>
+    <a class="gh" href="https://github.com/SigPath/mapa-semantyczna" target="_blank" rel="noopener">GitHub ↗</a>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1 · Zdania (po jednym w wierszu)</h2>
+      <textarea id="input" rows="9" spellcheck="false">Kot śpi na kanapie
+Pies bawi się piłką w parku
+Akacje kwitną w maju
+Pszenika dojrzewa na polu
+Rząd ogłosił zmiany w budżecie
+Parlament głosował nad ustawą
+Python jest językiem programowania
+Funkcje w kodzie warto testować
+Chleb kupuję w piekarni
+Mąkę dodajemy do ciasta</textarea>
+      <div class="row">
+        <label class="inline">Klastry (k-means): <input id="k" type="number" min="2" max="6" step="1" value="3"></label>
+        <button id="run" type="button">Mapuj zdania</button>
+      </div>
+      <p id="status" class="status" aria-live="polite">Pierwsze uruchomienie pobiera model (~30 MB, ONNX) — potem jest cache'owany.</p>
+    </section>
+
+    <section class="panel">
+      <h2>2 · Mapa</h2>
+      <canvas id="map" width="900" height="560" aria-label="Mapa 2D zdań pogrupowanych semantycznie"></canvas>
+      <div id="legend" class="legend mono"></div>
+    </section>
+
+    <section class="panel">
+      <h2>3 · Szukaj po podobieństwie</h2>
+      <div class="row">
+        <input id="query" type="text" placeholder="np. zwierzę w domu…" spellcheck="false">
+        <button id="search" type="button" disabled>Szukaj</button>
+      </div>
+      <ol id="hits" class="hits mono"></ol>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Mapa semantyczna · Marcin Burda · <a href="https://burda.eu.org">burda.eu.org</a> · PCA + k-means pisane od zera (src/logic.ts), model: Xenova/multilingual-e5-small przez transformers.js</p>
+  </footer>
+</body>
+</html>
